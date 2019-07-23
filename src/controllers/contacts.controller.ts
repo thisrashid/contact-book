@@ -35,7 +35,7 @@ export const view_contact = async (req: Request, res: Response) => {
 }
 
 export const search_contact = async (req: Request, res: Response) => {
-  const field = req.param('field'), 
+  let field = req.param('field'), 
     keyword = req.param('keyword'),
     page = +req.param('page') || 1,
     limit = +req.param('limit') || 10,
@@ -44,6 +44,8 @@ export const search_contact = async (req: Request, res: Response) => {
 
   let criteria = {};
   try {
+    if(['name', 'email'].indexOf(field) === -1) field = '';
+    
     if(field && keyword) {
       criteria = {
         [field] : { $regex: keyword, $options: 'i' }
