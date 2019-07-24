@@ -1,5 +1,1 @@
-import contactModel from './contact.model';
-
-export default () => {
-  contactModel();
-}
+export * from './contact.model';

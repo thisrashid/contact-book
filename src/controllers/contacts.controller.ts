@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { Response, Request } from 'express';
 import { only } from '../helper';
+import Contact from '../models/contact.model';
+// const Contact = mongoose.model('Contact');
 
-const Contact = mongoose.model('Contact');
 
 export const create_contact = async (req: any, res: Response) => {
   const contact = new Contact(req.body);
@@ -50,15 +51,13 @@ export const search_contact = async (req: Request, res: Response) => {
       criteria = {
         [field] : { $regex: keyword, $options: 'i' }
       }; 
+    } else {
+      criteria = {};
     }
 
-    if(!field || !keyword) {
-      return res.status(400).json({error: 'bad input'})
-    }
+    const data = await Contact.search({ criteria, sortby, sort, page, limit});
 
-    const data = await Contact.find(criteria).sort({[sortby]: sort === 'asc' ? 1 : -1}).skip((page - 1) * limit).limit(limit);
-  
-    res.send({ data });
+    res.json({ data });
   } catch(err) {
     console.error(err);
     res.status(500).json({ message: err.message });
