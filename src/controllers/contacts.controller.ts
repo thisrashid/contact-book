@@ -1,9 +1,6 @@
-import mongoose from 'mongoose';
 import { Response, Request } from 'express';
 import { only } from '../helper';
 import Contact from '../models/contact.model';
-// const Contact = mongoose.model('Contact');
-
 
 export const create_contact = async (req: any, res: Response) => {
   const contact = new Contact(req.body);
@@ -36,12 +33,13 @@ export const view_contact = async (req: Request, res: Response) => {
 }
 
 export const search_contact = async (req: Request, res: Response) => {
-  let field = req.param('field'), 
-    keyword = req.param('keyword'),
-    page = +req.param('page') || 1,
-    limit = +req.param('limit') || 10,
-    sortby = req.param('sortby') || '_id',
-    sort = req.param('sort') || 'desc';
+  console.log(req.query)
+  let field = req.query.field, 
+    keyword = req.query.keyword,
+    page = +req.query.page || 1,
+    limit = +req.query.limit || 10,
+    sortby = req.query.sortby || '_id',
+    sort = req.query.sort || 'desc';
 
   let criteria = {};
   try {
